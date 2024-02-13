@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { ToastContainer } from 'react-toastify';
+import { Loading } from '@/components';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <link rel='icon' href='/favicon.ico' sizes='any' />
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true}>
+        <ToastContainer />
+        <Loading></Loading>
         <AntdRegistry>{children}</AntdRegistry>
       </body>
     </html>
