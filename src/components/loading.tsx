@@ -20,7 +20,7 @@ export const Loading = () => {
             alignItems: 'center',
             zIndex: '999',
           }}>
-          <ReactLoading type={'spin'} color={'black'} height={'10%'} width={'20%'} />
+          <ReactLoading type={'spin'} color={'black'} height={'10%'} width={'10%'} />
         </div>
       )}
     </>

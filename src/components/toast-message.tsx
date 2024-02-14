@@ -11,20 +11,20 @@ export const ToastMessage = (props: IProps): React.ReactNode => {
   switch (props.type) {
     case 'WARNING':
       typeToast = {
-        image: <Image src={'./assets/icon-warning-solid.svg'} width={100} height={100} alt='Chú ý'></Image>,
+        image: <Image src={'./assets_icon-warning-solid.svg'} width={100} height={100} alt='Chú ý'></Image>,
         title: 'Chú ý!',
       };
 
       break;
     case 'ERROR':
       typeToast = {
-        image: <Image src={'./assets/icon-error.svg'} width={100} height={100} alt='Lỗi'></Image>,
+        image: <Image src={'./assets_icon-error.svg'} width={100} height={100} alt='Lỗi'></Image>,
         title: 'Lỗi!',
       };
       break;
     case 'SUCESS':
       typeToast = {
-        image: <Image src={'./assets/check_circle.svg'} width={100} height={100} alt='Thành công'></Image>,
+        image: <Image src={'./assets_check_circle.svg'} width={100} height={100} alt='Thành công'></Image>,
         title: 'Thành công!',
       };
       break;

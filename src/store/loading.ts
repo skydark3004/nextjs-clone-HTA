@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface ILoading {
+export interface ILoading {
   isLoading: boolean;
   setIsLoading(value: boolean): void;
 }

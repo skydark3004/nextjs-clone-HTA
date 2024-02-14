@@ -7,23 +7,39 @@ import useSWRMutation from 'swr/mutation';
 import { useRef } from 'react';
 import { submitForm } from '@/common';
 import { requiredRule, isEmailRule } from '@/rule';
-import { useLoadingStore } from '@/store';
+import { ILoading, useLoadingStore } from '@/store';
 import Image from 'next/image';
 import { ToastError, ToastSucess } from '@/common/toast';
+import { localStorageUtils } from '@/utils';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { getCookie, setCookie } from 'cookies-next';
+import moment from 'moment';
 
 export default function LoginPage() {
+  const router = useRouter();
   const emailRef = useRef('');
   const passwordRef = useRef('');
   const isKeepLoginRef = useRef(false);
-  const setLoading = useLoadingStore((state) => state.setIsLoading);
+
+  const setLoading = useLoadingStore((state: ILoading) => state.setIsLoading);
   const [form] = Form.useForm();
+  //console.log(localStorageUtils.get('accessToken'));
+  const value = getCookie('test'); // => 'value'
+  console.log('value::', value);
+
+  /*   const session = useSession();
+  console.log(session); */
 
   const { data, error, trigger, isMutating } = useSWRMutation(login.key, login.function, {
-    onSuccess(data, key) {
+    onSuccess(data) {
       setLoading(false);
       ToastSucess('Đăng nhập thành công');
+      setCookie('accessToken', data.accessToken, { expires: moment().add(1, 'days').toDate(), httpOnly: false, secure: false });
+      //localStorageUtils.add('accessToken', data.accessToken);
+      //router.push('/');
     },
-    onError(err: string, key) {
+    onError(err: string) {
       ToastError(err);
       setLoading(false);
     },
@@ -79,7 +95,7 @@ export default function LoginPage() {
             alt='background image'
             width={'100'}
             height={'100'}
-            src='/login/background.svg'
+            src='/login_background.svg'
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}></Image>
         </Col>
       </Row>
