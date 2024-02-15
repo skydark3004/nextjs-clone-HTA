@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 
+interface IInterceptor {
+  request?: (config: any) => any;
+  response?: (config: any) => any;
+}
+
 export class AxiosInstance {
   protected api;
-  constructor(_url: string, _config: any) {
+  constructor(_url: string, _config: any, interceptor?: IInterceptor) {
     let defaultConfig = {
       baseURL: _url,
       headers: {
@@ -14,6 +19,10 @@ export class AxiosInstance {
 
     defaultConfig = Object.assign(defaultConfig, _config);
     this.api = axios.create(defaultConfig);
+
+    if (interceptor?.request) {
+      this.api.interceptors.request.use(interceptor?.request);
+    }
   }
 
   get(url: string, config = {}) {

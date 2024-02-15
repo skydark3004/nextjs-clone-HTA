@@ -8,9 +8,11 @@ export function isEmailRule(message?: string): Rule {
   return {
     validator: (rule: any, value: any) => {
       if (value) {
-        const isValid = validateEmail(value);
-        if (!isValid) return Promise.reject(message || 'Email không hợp lệ');
-        return Promise.resolve();
+        return delay(500).then(() => {
+          const isValid = validateEmail(value);
+          if (!isValid) return Promise.reject(message || 'Email không hợp lệ');
+          return Promise.resolve();
+        });
       }
       return Promise.resolve();
     },
@@ -22,3 +24,5 @@ const validateEmail = (email: string) => {
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   );
 };
+
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));

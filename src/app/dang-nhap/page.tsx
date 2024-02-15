@@ -1,20 +1,18 @@
 'use client';
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
 import styles from './page.module.css';
-import { login } from '@/api/auth.api';
+import { login } from '@/api-be/auth.api';
 
 import useSWRMutation from 'swr/mutation';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { submitForm } from '@/common';
 import { requiredRule, isEmailRule } from '@/rule';
 import { ILoading, useLoadingStore } from '@/store';
 import Image from 'next/image';
 import { ToastError, ToastSucess } from '@/common/toast';
-import { localStorageUtils } from '@/utils';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { getCookie, setCookie } from 'cookies-next';
-import moment from 'moment';
+import { APP_CONFIG } from '@/config/app.config';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -24,20 +22,13 @@ export default function LoginPage() {
 
   const setLoading = useLoadingStore((state: ILoading) => state.setIsLoading);
   const [form] = Form.useForm();
-  //console.log(localStorageUtils.get('accessToken'));
-  const value = getCookie('test'); // => 'value'
-  console.log('value::', value);
-
-  /*   const session = useSession();
-  console.log(session); */
 
   const { data, error, trigger, isMutating } = useSWRMutation(login.key, login.function, {
     onSuccess(data) {
       setLoading(false);
       ToastSucess('Đăng nhập thành công');
-      setCookie('accessToken', data.accessToken, { expires: moment().add(1, 'days').toDate(), httpOnly: false, secure: false });
-      //localStorageUtils.add('accessToken', data.accessToken);
-      //router.push('/');
+      setCookie(APP_CONFIG.ENV.KEY_ACCESS_TOKEN, data.accessToken, { maxAge: data.expiresOfAcessToken, httpOnly: false, secure: false });
+      router.push('/');
     },
     onError(err: string) {
       ToastError(err);
@@ -49,9 +40,11 @@ export default function LoginPage() {
     trigger({ email: emailRef.current, password: passwordRef.current, isKeepLogin: isKeepLoginRef.current });
   };
 
-  if (isMutating) {
-    setLoading(true);
-  }
+  useEffect(() => {
+    if (isMutating) {
+      setLoading(true);
+    }
+  }, []);
 
   return (
     <>
@@ -61,9 +54,16 @@ export default function LoginPage() {
             <h1 className='text-5xl font-bold text-violet-950 mb-3'>Đăng nhập</h1>
             <p className={`${styles.subTitle}`}>Điền đầy đủ thông tin để đăng nhập</p>
             <div className='mt-10'>
-              <Form name='basic' form={form} labelCol={{ span: 24 }} wrapperCol={{ span: 40 }} style={{ maxWidth: 600 }} autoComplete='off'>
-                <Form.Item label='Email' name='username' rules={[requiredRule('Vui lòng nhập Email'), isEmailRule()]}>
-                  <Input placeholder='Nhập email của bạn...' onChange={(e) => (emailRef.current = e.target.value)} />
+              <Form
+                name='basic'
+                form={form}
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 40 }}
+                style={{ maxWidth: 600 }}
+                autoComplete='off'
+                initialValues={{ isKeepLogin: false }}>
+                <Form.Item label='Email' name='Email' rules={[requiredRule('Vui lòng nhập Email'), isEmailRule()]}>
+                  <Input placeholder='Nhập email của bạn...' onChange={(e) => (emailRef.current = e.target.value)} autoComplete={'email'} />
                 </Form.Item>
 
                 <Form.Item label='Mật khẩu' name='password' rules={[requiredRule('Vui lòng nhập mật khẩu')]}>

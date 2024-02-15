@@ -7,6 +7,6 @@ export const isValidForm = async (form: FormInstance) => {
     return true;
   } catch (error: any) {
     const errorInfor: IErrorValidateForm = error;
-    if (errorInfor.errorFields.length) return false;
+    return errorInfor.errorFields.length ? false : true;
   }
 };

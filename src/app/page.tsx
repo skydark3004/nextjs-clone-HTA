@@ -1,22 +1,10 @@
-import { localStorageUtils } from '@/utils';
+import { Navbar } from '@/components';
 import { Col, Row } from 'antd';
-import { redirect, useRouter } from 'next/navigation';
-import { useLayoutEffect } from 'react';
 
 export default function Home() {
-  /*   const router = useRouter();
-  if (!localStorageUtils.get('accessToken')) {
-    router.push('/dang-nhap');
-  } */
-
-  /*   useLayoutEffect(() => {
-    if (!localStorageUtils.get('accessToken')) {
-      redirect('/dang-nhap');
-    }
-  }, []); */
-
   return (
     <>
+      <Navbar></Navbar>
       <Row>
         <Col span={12}>col-12</Col>
         <Col span={12}>

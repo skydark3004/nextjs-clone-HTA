@@ -4,9 +4,11 @@ const ROOT = path.normalize(__dirname + '/../..');
 dotenv.config({ path: `${ROOT}/.env` }); */
 
 const envConfig = {
-  NODE_ENV: process.env.NODE_ENV || 'local',
+  NODE_ENV: process.env.NODE_ENVIROMENT || 'local',
   VERSION: process.env.VERSION || 'v1',
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || '',
+  JWT_SECRET: process.env.JWT_SECRET || `core-devjwtauthenticate-core.dev_professional#2023`,
+  KEY_ACCESS_TOKEN: process.env.KEY_ACCESS_TOKEN || `accessToken`,
 };
 
 export default envConfig;
