@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import './globals.css';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ToastContainer } from 'react-toastify';
 import { Loading } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Montserrat({ subsets: ['vietnamese'], style: ['normal', 'italic'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
