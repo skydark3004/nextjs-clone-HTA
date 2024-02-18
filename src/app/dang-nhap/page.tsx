@@ -4,7 +4,7 @@ import styles from './page.module.css';
 import { login } from '@/api-be/auth.api';
 
 import useSWRMutation from 'swr/mutation';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { submitForm } from '@/common';
 import { requiredRule, isEmailRule } from '@/rule';
 import { ILoading, useLoadingStore } from '@/store';
@@ -13,22 +13,25 @@ import { ToastError, ToastSucess } from '@/common/toast';
 import { useRouter } from 'next/navigation';
 import { getCookie, setCookie } from 'cookies-next';
 import { APP_CONFIG } from '@/config/app.config';
+import { Loading } from '@/components';
 
 export default function LoginPage() {
+  console.log('render at client');
   const router = useRouter();
   const emailRef = useRef('');
   const passwordRef = useRef('');
   const isKeepLoginRef = useRef(false);
 
   const setLoading = useLoadingStore((state: ILoading) => state.setIsLoading);
+
   const [form] = Form.useForm();
 
   const { data, error, trigger, isMutating } = useSWRMutation(login.key, login.function, {
     onSuccess(data) {
       setLoading(false);
       ToastSucess('Đăng nhập thành công');
-      setCookie(APP_CONFIG.ENV.KEY_ACCESS_TOKEN, data.accessToken, { maxAge: data.expiresOfAcessToken, httpOnly: false, secure: false });
-      router.push('/');
+      setCookie(APP_CONFIG.ENV.KEY_ACCESS_TOKEN, data.accessToken, { maxAge: data.expiresOfAcessToken, httpOnly: true, secure: false });
+      //router.push('/');
     },
     onError(err: string) {
       ToastError(err);
@@ -40,14 +43,9 @@ export default function LoginPage() {
     trigger({ email: emailRef.current, password: passwordRef.current, isKeepLogin: isKeepLoginRef.current });
   };
 
-  useEffect(() => {
-    if (isMutating) {
-      setLoading(true);
-    }
-  }, []);
-
   return (
     <>
+      {isMutating && <Loading></Loading>}
       <Row style={{ maxWidth: '100vw', height: '100vh' }}>
         <Col span={12}>
           <div className='center-screen'>

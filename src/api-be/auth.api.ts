@@ -12,3 +12,5 @@ export const login = {
     return instanceAxios.post('api/v1/admin/auth/login', data.arg);
   },
 };
+
+//  return instanceAxios.post('http://localhost:3000/api/auth/', data.arg);

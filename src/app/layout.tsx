@@ -5,6 +5,8 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ToastContainer } from 'react-toastify';
 import { Loading } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from '@/provider';
+import { IBaseProps } from '@/interface';
 
 const inter = Montserrat({ subsets: ['vietnamese'], style: ['normal', 'italic'] });
 
@@ -16,18 +18,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout(props: IBaseProps) {
   return (
     <html lang='en'>
       {/* <link rel='icon' href='/favicon.ico' sizes='any' /> */}
       <body className={inter.className} suppressHydrationWarning={true}>
         <ToastContainer />
-        <Loading></Loading>
-        <AntdRegistry>{children}</AntdRegistry>
+        {/*         <Loading></Loading> */}
+        <AntdRegistry>
+          <AuthProvider> {props.children}</AuthProvider>
+        </AntdRegistry>
       </body>
     </html>
   );

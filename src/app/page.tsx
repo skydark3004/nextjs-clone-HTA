@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
+  console.log('render at server');
   return (
     <>
       <Row style={{ backgroundColor: '#F4F7FE' }}>
@@ -15,12 +16,13 @@ export default function Home() {
                 alt='logo company'
                 width={100}
                 height={100}
+                priority={true}
                 style={{ width: '100%' }}></Image>
             </Link>
 
             <Image src={'./slash.svg'} alt='slash' width={100} height={100} style={{ width: '80%', margin: '0 auto' }}></Image>
           </Row>
-          <Navbar></Navbar>
+          {/*  <Navbar></Navbar> */}
         </Col>
         <Col span={19}>
           <h1>hello</h1>
