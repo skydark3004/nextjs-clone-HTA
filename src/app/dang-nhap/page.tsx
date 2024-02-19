@@ -1,10 +1,9 @@
 'use client';
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
 import styles from './page.module.css';
-import { login } from '@/api-be/auth.api';
 
 import useSWRMutation from 'swr/mutation';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { submitForm } from '@/common';
 import { requiredRule, isEmailRule } from '@/rule';
 import { ILoading, useLoadingStore } from '@/store';
@@ -14,6 +13,8 @@ import { useRouter } from 'next/navigation';
 import { getCookie, setCookie } from 'cookies-next';
 import { APP_CONFIG } from '@/config/app.config';
 import { Loading } from '@/components';
+import { login } from '@/api-be/client';
+import { AxiosError } from 'axios';
 
 export default function LoginPage() {
   console.log('render at client');
@@ -28,16 +29,20 @@ export default function LoginPage() {
 
   const { data, error, trigger, isMutating } = useSWRMutation(login.key, login.function, {
     onSuccess(data) {
+      console.log(data);
       setLoading(false);
       ToastSucess('Đăng nhập thành công');
-      setCookie(APP_CONFIG.ENV.KEY_ACCESS_TOKEN, data.accessToken, { maxAge: data.expiresOfAcessToken, httpOnly: true, secure: false });
-      //router.push('/');
+      router.push('/');
     },
-    onError(err: string) {
-      ToastError(err);
+    onError(err: any) {
+      ToastError(err.response?.data?.message || 'Đăng nhập thất bại');
       setLoading(false);
     },
   });
+
+  useEffect(() => {
+    isMutating && setLoading(true);
+  }, [isMutating, setLoading]);
 
   const handleSubmitForm = async () => {
     trigger({ email: emailRef.current, password: passwordRef.current, isKeepLogin: isKeepLoginRef.current });
@@ -45,7 +50,7 @@ export default function LoginPage() {
 
   return (
     <>
-      {isMutating && <Loading></Loading>}
+      {/* {isMutating && <Loading></Loading>} */}
       <Row style={{ maxWidth: '100vw', height: '100vh' }}>
         <Col span={12}>
           <div className='center-screen'>

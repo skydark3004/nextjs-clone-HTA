@@ -1,4 +1,4 @@
-import { IGetMyCompany, getMyCompany } from '@/api-be';
+//import { IGetMyCompany, getMyCompany } from '@/api-be';
 import { menuNavbar } from '@/core/constant';
 import { EnumModule } from '@/core/enum';
 import { Menu, MenuProps } from 'antd';
@@ -11,15 +11,15 @@ import React from 'react';
 // 3. nếu kh phải role admin thì check theo account group
 
 export const Navbar = async () => {
-  const res: IGetMyCompany = await getMyCompany.function();
-  const menus = res?.data?.package?.modules?.map((el) => menuNavbar[el]);
+  /*   const res: IGetMyCompany = await getMyCompany.function();
+  const menus = res?.data?.package?.modules?.map((el) => menuNavbar[el]); */
   //console.log(res);
 
   return (
     <>
-      <Sider style={{ backgroundColor: 'red' }}>
+      {/*       <Sider style={{ backgroundColor: 'red' }}>
         <Menu mode='inline' defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} style={{ minWidth: '100%' }} items={menus} />
-      </Sider>
+      </Sider> */}
     </>
   );
 };

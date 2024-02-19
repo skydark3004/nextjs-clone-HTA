@@ -24,7 +24,7 @@ export default function RootLayout(props: IBaseProps) {
       {/* <link rel='icon' href='/favicon.ico' sizes='any' /> */}
       <body className={inter.className} suppressHydrationWarning={true}>
         <ToastContainer />
-        {/*         <Loading></Loading> */}
+        <Loading></Loading>
         <AntdRegistry>
           <AuthProvider> {props.children}</AuthProvider>
         </AntdRegistry>
