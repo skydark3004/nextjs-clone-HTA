@@ -7,3 +7,10 @@ export const login = {
     return axios.post(`api/auth`, data.arg);
   },
 };
+
+export const getDataFromCookie = {
+  key: 'GET_DATA_FROM_COOKIE',
+  function: function login(key: string) {
+    return axios.get(`api/auth`);
+  },
+};

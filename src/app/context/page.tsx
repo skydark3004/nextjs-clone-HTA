@@ -1,11 +1,16 @@
 'use client';
 import { Navbar } from '@/components';
+import { UserContext } from '@/context';
 import { CookieUtilsClient } from '@/utils/cookie/client';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useContext } from 'react';
 
 export default function Home() {
+  const user = useContext(UserContext);
+  console.log('user::', user);
+
   const token = CookieUtilsClient.get('accessToken');
   console.log(token);
   console.log('render at server');
@@ -30,7 +35,7 @@ export default function Home() {
         </Col>
         <Col span={19}>
           <h1>hello</h1>
-          <Link href={'/context'}>context</Link>
+          <Link href={'/'}>redirect to home</Link>
           {/* <Image src='/login/background.svg' preview={false} /> */}
         </Col>
       </Row>

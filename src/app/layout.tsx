@@ -5,7 +5,7 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ToastContainer } from 'react-toastify';
 import { Loading } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
-import { AuthProvider } from '@/provider';
+import { UserProvider } from '@/provider';
 import { IBaseProps } from '@/interface';
 
 const inter = Montserrat({ subsets: ['vietnamese'], style: ['normal', 'italic'] });
@@ -26,7 +26,7 @@ export default function RootLayout(props: IBaseProps) {
         <ToastContainer />
         <Loading></Loading>
         <AntdRegistry>
-          <AuthProvider> {props.children}</AuthProvider>
+          <UserProvider> {props.children}</UserProvider>
         </AntdRegistry>
       </body>
     </html>
