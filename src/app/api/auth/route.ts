@@ -2,11 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 import { APP_CONFIG } from '@/config/app.config';
 import { CookieUtilsServer } from '@/utils/cookie/server';
-import { jwtVerify } from 'jose';
 
 export async function GET() {
-  const token = await getDecodeToken();
-  return Response.json({ payload: token ? token : null });
+  const token = getTokenByCookies();
+  if (!token) return Response.json({ data: null });
+  try {
+    const res = await axios.get(`${APP_CONFIG.ENV.BASE_URL}/api/v1/admin/user/get-me`, { headers: { Authorization: `Bearer ${token}` } });
+    return NextResponse.json({ data: { ...res.data, accessToken: token } });
+  } catch (error: any) {
+    console.log(error);
+    const responseError = error.response.data;
+    return NextResponse.json(responseError, { status: 400 });
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -25,19 +32,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(responseError, { status: 400 });
   }
 }
-
-async function getDecodeToken() {
-  try {
-    const token = getTokenByCookies();
-    if (!token) return false;
-
-    const verify = await jwtVerify(token, new TextEncoder().encode(APP_CONFIG.ENV.JWT_SECRET));
-    return verify.payload;
-  } catch (error) {
-    return false;
-  }
-}
-
 const getTokenByCookies = () => {
   const token = CookieUtilsServer.get(APP_CONFIG.ENV.KEY_ACCESS_TOKEN);
   return token?.value;

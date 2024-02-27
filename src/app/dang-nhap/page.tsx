@@ -10,14 +10,12 @@ import { ILoading, useLoadingStore } from '@/store';
 import Image from 'next/image';
 import { ToastError, ToastSucess } from '@/common/toast';
 import { useRouter } from 'next/navigation';
-import { getCookie, setCookie } from 'cookies-next';
-import { APP_CONFIG } from '@/config/app.config';
-import { Loading } from '@/components';
 import { login } from '@/api-be/client';
-import { AxiosError } from 'axios';
+import { useUserContext } from '@/context';
 
 export default function LoginPage() {
-  console.log('render at client');
+  const { setDataContext } = useUserContext();
+
   const router = useRouter();
   const emailRef = useRef('');
   const passwordRef = useRef('');
@@ -27,11 +25,17 @@ export default function LoginPage() {
 
   const [form] = Form.useForm();
 
-  const { data, error, trigger, isMutating } = useSWRMutation(login.key, login.function, {
+  const { trigger, isMutating } = useSWRMutation(login.key, login.function, {
     onSuccess(data) {
-      console.log(data);
+      const res = data.data;
+      console.log(res);
       setLoading(false);
       ToastSucess('Đăng nhập thành công');
+      setDataContext({
+        fullname: res?.fullname,
+        roleCode: res.role.code,
+        accessToken: res?.accessToken,
+      });
       router.push('/');
     },
     onError(err: any) {

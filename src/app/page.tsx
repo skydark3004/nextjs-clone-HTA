@@ -1,14 +1,10 @@
 'use client';
 import { Navbar } from '@/components';
-import { CookieUtilsClient } from '@/utils/cookie/client';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
-  const token = CookieUtilsClient.get('accessToken');
-  console.log(token);
-  console.log('render at server');
   return (
     <>
       <Row style={{ backgroundColor: '#F4F7FE' }}>

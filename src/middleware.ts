@@ -5,13 +5,13 @@ import { jwtVerify } from 'jose';
 import { APP_CONFIG } from './config/app.config';
 
 const PUBLIC_ROUTES: string[] = [];
-const PRIVATE_ROUTES: string[] = ['/'];
+const PRIVATE_ROUTES: string[] = ['/', '/context'];
 const ROUTE_LOGIN = '/dang-nhap';
 const ROUTE_HOME = '/';
 
 export async function middleware(request: NextRequest) {
   const currentRoute = request.nextUrl.pathname;
-  console.log('ROUTE::', currentRoute);
+  console.log('ROUTE AT MIDDLEWARE::', currentRoute);
 
   // login page
   if (isLoginPage(currentRoute)) {

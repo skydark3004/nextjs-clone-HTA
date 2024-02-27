@@ -4,7 +4,6 @@ import ReactLoading from 'react-loading';
 
 export const Loading = () => {
   const isLoading = useLoadingStore((state) => state.isLoading);
-  console.log('isLoading::', isLoading);
   return (
     <>
       {isLoading && (

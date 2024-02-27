@@ -5,8 +5,8 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ToastContainer } from 'react-toastify';
 import { Loading } from '@/components';
 import 'react-toastify/dist/ReactToastify.css';
-import { UserProvider } from '@/provider';
 import { IBaseProps } from '@/interface';
+import { UserProvider } from '@/context';
 
 const inter = Montserrat({ subsets: ['vietnamese'], style: ['normal', 'italic'] });
 
