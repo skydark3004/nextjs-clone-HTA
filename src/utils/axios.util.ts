@@ -70,7 +70,8 @@ export class AxiosInstance {
   }
 
   mapError(err: any) {
-    const responseError = err?.response?.data?.message || 'Đã có lỗi xảy ra!';
+    console.log('mapError::', err);
+    const responseError = err?.response?.data;
     //throw new Error(responseError);
     throw responseError;
   }

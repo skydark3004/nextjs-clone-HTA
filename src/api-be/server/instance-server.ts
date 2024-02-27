@@ -12,6 +12,6 @@ const interceptorRequest = async (config: any) => {
   return config;
 };
 
-const instance = new AxiosInstance(ENV.BASE_URL, {}, { request: interceptorRequest });
+const instance = new AxiosInstance(ENV.BASE_URL_BACK_END, {}, { request: interceptorRequest });
 
 export default instance;

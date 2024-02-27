@@ -18,10 +18,12 @@ export type GlobalContent = {
   dataContext: IUserFromToken | null;
   setDataContext: (_value: IUserFromToken) => void;
 };
-const UserGlobalContext = createContext<GlobalContent>({
+
+export const UserGlobalContext = createContext<GlobalContent>({
   dataContext: null,
   setDataContext: () => {},
 });
+
 export const useUserContext = () => useContext(UserGlobalContext);
 
 export const UserProvider = (props: IProps) => {

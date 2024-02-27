@@ -10,7 +10,7 @@ import { ILoading, useLoadingStore } from '@/store';
 import Image from 'next/image';
 import { ToastError, ToastSucess } from '@/common/toast';
 import { useRouter } from 'next/navigation';
-import { login } from '@/api-be/client';
+import { getMyCompany, login } from '@/api-be/client';
 import { useUserContext } from '@/context';
 
 export default function LoginPage() {
@@ -25,6 +25,16 @@ export default function LoginPage() {
 
   const [form] = Form.useForm();
 
+  const { trigger: triggerGetMyCompany } = useSWRMutation(getMyCompany.key, getMyCompany.function, {
+    onSuccess(data) {
+      console.log(data);
+    },
+    onError(err: any) {
+      console.log(err);
+      ToastError(err?.message);
+    },
+  });
+
   const { trigger, isMutating } = useSWRMutation(login.key, login.function, {
     onSuccess(data) {
       const res = data.data;
@@ -36,9 +46,11 @@ export default function LoginPage() {
         roleCode: res.role.code,
         accessToken: res?.accessToken,
       });
-      router.push('/');
+      triggerGetMyCompany();
+      //router.push('/');
     },
     onError(err: any) {
+      console.log(err);
       ToastError(err.response?.data?.message || 'Đăng nhập thất bại');
       setLoading(false);
     },

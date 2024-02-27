@@ -7,5 +7,5 @@ interface ILogin {
 }
 
 export function loginRequest(body: ILogin) {
-  return instanceServer.post('api/v1/admin/auth/login', body);
+  return instanceServer.post('/api/v1/admin/auth/login', body);
 }

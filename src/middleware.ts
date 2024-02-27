@@ -5,7 +5,7 @@ import { jwtVerify } from 'jose';
 import { APP_CONFIG } from './config/app.config';
 
 const PUBLIC_ROUTES: string[] = [];
-const PRIVATE_ROUTES: string[] = ['/', '/context'];
+const PRIVATE_ROUTES: string[] = ['/'];
 const ROUTE_LOGIN = '/dang-nhap';
 const ROUTE_HOME = '/';
 

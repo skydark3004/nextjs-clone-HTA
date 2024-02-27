@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
 import { APP_CONFIG } from '@/config/app.config';
 import { CookieUtilsServer } from '@/utils/cookie/server';
+import { getMeRequest, loginRequest } from '@/api-be/server';
 
 export async function GET() {
   const token = getTokenByCookies();
   if (!token) return Response.json({ data: null });
   try {
-    const res = await axios.get(`${APP_CONFIG.ENV.BASE_URL}/api/v1/admin/user/get-me`, { headers: { Authorization: `Bearer ${token}` } });
-    return NextResponse.json({ data: { ...res.data, accessToken: token } });
-  } catch (error: any) {
-    console.log(error);
-    const responseError = error.response.data;
-    return NextResponse.json(responseError, { status: 400 });
+    const res = await getMeRequest();
+    return NextResponse.json({ data: { ...res, accessToken: token } });
+  } catch (error) {
+    return NextResponse.json(error, { status: 400 });
   }
 }
 
@@ -20,16 +18,16 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const bodyLogin = { email: body.email, password: body.password, isKeepLogin: body.isKeepLogin };
   try {
-    const res = await axios.post(`${APP_CONFIG.ENV.BASE_URL}/api/v1/admin/auth/login`, bodyLogin);
-    CookieUtilsServer.add(APP_CONFIG.ENV.KEY_ACCESS_TOKEN, res.data.accessToken, {
+    const res = await loginRequest(bodyLogin);
+
+    CookieUtilsServer.add(APP_CONFIG.ENV.KEY_ACCESS_TOKEN, res.accessToken, {
       httpOnly: true,
       secure: !APP_CONFIG.IS_LOCAL,
-      maxAge: res.data.expiresOfAcessToken,
+      maxAge: res.expiresOfAcessToken,
     });
-    return NextResponse.json(res.data);
-  } catch (error: any) {
-    const responseError = error.response.data;
-    return NextResponse.json(responseError, { status: 400 });
+    return NextResponse.json(res);
+  } catch (error) {
+    return NextResponse.json(error, { status: 400 });
   }
 }
 const getTokenByCookies = () => {
