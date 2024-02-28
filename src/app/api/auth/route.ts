@@ -9,8 +9,10 @@ export async function GET() {
   try {
     const res = await getMeRequest();
     return NextResponse.json({ data: { ...res, accessToken: token } });
-  } catch (error) {
-    return NextResponse.json(error, { status: 400 });
+  } catch (error: any) {
+    console.log('error at GET REQUEST SERVER');
+    console.log(error);
+    return NextResponse.json(error, { status: error.statusCode });
   }
 }
 

@@ -6,7 +6,7 @@ import useSWRMutation from 'swr/mutation';
 import { useEffect, useRef } from 'react';
 import { submitForm } from '@/common';
 import { requiredRule, isEmailRule } from '@/rule';
-import { ILoading, useLoadingStore } from '@/store';
+import { ILoading, useLoadingStore, useUserStore } from '@/store';
 import Image from 'next/image';
 import { ToastError, ToastSucess } from '@/common/toast';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,8 @@ import { getMyCompany, login } from '@/api-be/client';
 import { useUserContext } from '@/context';
 
 export default function LoginPage() {
-  const { setDataContext } = useUserContext();
+  // const { setDataContext } = useUserContext();
+  const setInforUser = useUserStore((state) => state.setInforUser);
 
   const router = useRouter();
   const emailRef = useRef('');
@@ -41,12 +42,12 @@ export default function LoginPage() {
       console.log(res);
       setLoading(false);
       ToastSucess('Đăng nhập thành công');
-      setDataContext({
+      setInforUser({
         fullname: res?.fullname,
-        roleCode: res.role.code,
+        roleCode: res?.role?.code,
         accessToken: res?.accessToken,
       });
-      triggerGetMyCompany();
+      //triggerGetMyCompany();
       //router.push('/');
     },
     onError(err: any) {

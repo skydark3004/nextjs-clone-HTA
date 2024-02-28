@@ -26,7 +26,8 @@ export default function RootLayout(props: IBaseProps) {
         <ToastContainer />
         <Loading></Loading>
         <AntdRegistry>
-          <UserProvider> {props.children}</UserProvider>
+          {props.children}
+          {/*  <UserProvider> </UserProvider> */}
         </AntdRegistry>
       </body>
     </html>

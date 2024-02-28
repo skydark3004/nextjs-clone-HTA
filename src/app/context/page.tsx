@@ -1,13 +1,16 @@
 'use client';
 import { Navbar } from '@/components';
-import { useUserContext } from '@/context';
+import { useUserStore } from '@/store';
+//import { useUserContext } from '@/context';
 import { Col, Row } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
-  const { dataContext } = useUserContext();
-  console.log('dataContext::', dataContext);
+  /*   const { dataContext } = useUserContext();
+  console.log('dataContext::', dataContext); */
+  const InforUser = useUserStore((state) => state);
+  console.log('InforUser::', InforUser);
 
   return (
     <>
