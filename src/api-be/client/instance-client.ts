@@ -1,20 +1,27 @@
 import { AxiosInstance } from '@/utils/axios.util';
 import ENV from '@/config/env.config';
-import { APP_CONFIG } from '@/config/app.config';
-import { CookieUtilsClient } from '@/utils/cookie/client';
-import { UserGlobalContext, useUserContext } from '@/context';
-import React from 'react';
+import { getStateFromUserStore } from '@/store';
 
-const interceptorRequest = async (config: any) => {
-  /*  const context = UserGlobalContext.
-  const { dataContext } = useUserContext();
-  const context = React.useContext(UserGlobalContext);
-  console.log('dataContext::', dataContext);
+const axiosInstance = new AxiosInstance(ENV.BASE_URL_BACK_END, {});
+axiosInstance.instance.interceptors.request.use(
+  function (config) {
+    const { accessToken } = getStateFromUserStore();
+    config.headers.Authorization = accessToken ? `Bearer ${accessToken}` : '';
+    return config;
+  },
+  function (error) {
+    console.log(error);
+    return Promise.reject(error);
+  },
+);
 
-  //const token = CookieUtilsClient.get(APP_CONFIG.ENV.KEY_ACCESS_TOKEN);
+axiosInstance.instance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
+);
 
-  config.headers.Authorization = `Bearer ${dataContext?.accessToken}`; */
-  return config;
-};
-
-export const instanceClient = new AxiosInstance(ENV.BASE_URL_BACK_END, {}, { request: interceptorRequest });
+export const instanceClient = axiosInstance;

@@ -1,17 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
-
-interface IInterceptor {
-  request?: (config: any) => any;
-  response?: {
-    withSuccess: (response: any) => any;
-    withError: (error: any) => any;
-  };
-}
+import axios, { AxiosRequestConfig, AxiosInstance as IAxiosInstance } from 'axios';
 
 export class AxiosInstance {
-  protected api;
-  constructor(_url: string, _config: any, interceptor?: IInterceptor) {
+  instance: IAxiosInstance;
+  constructor(_url: string, _config: any) {
     let defaultConfig = {
       baseURL: _url,
       headers: {
@@ -21,58 +13,50 @@ export class AxiosInstance {
     };
 
     defaultConfig = Object.assign(defaultConfig, _config);
-    this.api = axios.create(defaultConfig);
-
-    if (interceptor?.request) {
-      this.api.interceptors.request.use(interceptor.request);
-    }
-
-    if (interceptor?.response) {
-      this.api.interceptors.response.use(interceptor.response.withSuccess, interceptor.response.withError);
-    }
+    this.instance = axios.create(defaultConfig);
   }
 
-  get(url: string, config = {}) {
+  async get(url: string, config: AxiosRequestConfig = {}) {
     const defaultConfig = {
       ...config,
     };
-    const request = this.api.get(url, defaultConfig); /* .then(this.mapData).catch(this.mapError) */
-    return request;
+    const { data } = await this.instance.get(url, defaultConfig); /* .then(this.mapData).catch(this.mapError) */
+    return data;
   }
 
-  post(url: string, body: any, config = {}) {
+  async post(url: string, body: any, config: AxiosRequestConfig = {}) {
     const defaultConfig = {
       ...config,
     };
-    const request = this.api.post(url, body, defaultConfig).then(this.mapData).catch(this.mapError);
-    return request;
+    const { data } = await this.instance.post(url, body, defaultConfig);
+    return data;
   }
 
-  put(url: string, body: any, config = {}) {
+  async put(url: string, body: any, config: AxiosRequestConfig = {}) {
     const defaultConfig = {
       ...config,
     };
-    const request = this.api.put(url, body, defaultConfig).then(this.mapData).catch(this.mapError);
-    return request;
+    const { data } = await this.instance.put(url, body, defaultConfig);
+    return data;
   }
 
-  patch(url: string, body: any, config = {}) {
+  async patch(url: string, body: any, config: AxiosRequestConfig = {}) {
     const defaultConfig = {
       ...config,
     };
-    const request = this.api.patch(url, body, defaultConfig).then(this.mapData).catch(this.mapError);
-    return request;
+    const { data } = await this.instance.patch(url, body, defaultConfig); /* .then(this.mapData).catch(this.mapError) */
+    return data;
   }
 
-  _delete(url: string, config = {}) {
+  async delete(url: string, config: AxiosRequestConfig = {}) {
     const defaultConfig = {
       ...config,
     };
-    const request = this.api.delete(url, defaultConfig).then(this.mapData).catch(this.mapError);
-    return request;
+    const { data } = await this.instance.delete(url, defaultConfig); /* .then(this.mapData).catch(this.mapError) */
+    return data;
   }
 
-  mapData(res: any) {
+  /*   mapData(res: any) {
     console.log('mapData::', res);
     return res.data;
   }
@@ -84,5 +68,5 @@ export class AxiosInstance {
 
     //throw new Error(responseError);
     throw responseError;
-  }
+  } */
 }

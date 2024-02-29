@@ -16,11 +16,6 @@ const interceptorRequest = async (config: any) => {
   return config;
 };
 
-const interceptorResponseWithSuccess = async (response: any) => {
-  console.log('response::----------------------------------');
-  return response.data;
-};
-
 const interceptorResponseWithError = async (error: any) => {
   console.log('error::----------------------------------');
   console.log('error::', error);

@@ -20,6 +20,8 @@ export const useUserStore = create<IUser>((set) => ({
   setInforUser: (value: any) => set(() => ({ ...value })),
 }));
 
+export const { getState: getStateFromUserStore } = useUserStore;
+
 // Fetch that gets the current bears from api
 /* axios
   .get(`api/auth`)
