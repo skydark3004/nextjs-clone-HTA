@@ -6,18 +6,17 @@ const axiosInstance = new AxiosInstance(ENV.BASE_URL_BACK_END, {});
 axiosInstance.instance.interceptors.request.use(
   function (config) {
     const { accessToken } = getStateFromUserStore();
-    config.headers.Authorization = accessToken ? `Bearer ${accessToken}` : '';
+    config.headers.Authorization = accessToken ? `Bearer ${accessToken}` : undefined;
     return config;
   },
   function (error) {
-    console.log(error);
     return Promise.reject(error);
   },
 );
 
 axiosInstance.instance.interceptors.response.use(
   function (response) {
-    return response;
+    return response.data;
   },
   function (error) {
     return Promise.reject(error);

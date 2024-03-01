@@ -12,7 +12,7 @@ export default function Home() {
           <Row>
             <Link href={'/'} style={{ margin: '30px auto' }}>
               <Image
-                src={'https://storage.googleapis.com/staging-vfl/companies/3f51a76a92ad12b02579.png'}
+                src={'https://storage.googleapis.com/staging-vfl/companies/5be774db4a029a6c12cf.png'}
                 alt='logo company'
                 width={100}
                 height={100}

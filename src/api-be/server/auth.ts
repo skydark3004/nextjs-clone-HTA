@@ -1,4 +1,4 @@
-import instanceServer from './instance-server';
+import { instanceServer } from './instance';
 
 interface ILogin {
   email: string;

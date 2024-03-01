@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosRequestConfig, AxiosInstance as IAxiosInstance } from 'axios';
+import axios, { AxiosRequestConfig, CreateAxiosDefaults, AxiosInstance as IAxiosInstance } from 'axios';
 
 export class AxiosInstance {
   instance: IAxiosInstance;
-  constructor(_url: string, _config: any) {
-    let defaultConfig = {
+  constructor(_url: string, _config: CreateAxiosDefaults = {}) {
+    let defaultConfig: CreateAxiosDefaults = {
       baseURL: _url,
       headers: {
         'Content-Type': 'application/json',

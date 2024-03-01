@@ -10,8 +10,6 @@ export async function GET() {
     const res = await getMeRequest();
     return NextResponse.json({ data: { ...res, accessToken: token } });
   } catch (error: any) {
-    console.log('error at GET REQUEST SERVER');
-    console.log(error);
     return NextResponse.json(error, { status: error.statusCode });
   }
 }

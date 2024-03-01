@@ -1,5 +1,5 @@
+import { instanceClientToNext } from '@/api-be/client-to-nextjs/instance';
 import { EnumRoleCode } from '@/core/enum';
-import axios from 'axios';
 import { create } from 'zustand';
 
 export interface IUser {
@@ -9,32 +9,19 @@ export interface IUser {
   setInforUser: (value: any) => void;
 }
 
-const initState = {
+export const useUserStore = create<IUser>((set) => ({
   accessToken: null,
   fullname: null,
   roleCode: null,
-};
-
-export const useUserStore = create<IUser>((set) => ({
-  ...initState,
   setInforUser: (value: any) => set(() => ({ ...value })),
 }));
 
-export const { getState: getStateFromUserStore } = useUserStore;
-
 // Fetch that gets the current bears from api
-/* axios
-  .get(`api/auth`)
-  .then((result) => {
-    const response = result.data;
-    console.log('response:', response);
-    useUserStore.setState({
-      fullname: response.data?.fullname,
-      roleCode: response.data?.role.code,
-      accessToken: response.data?.accessToken,
-    });
-  })
-  .catch((err) => {
-    console.log('err at store zustand');
+instanceClientToNext.get(`api/auth/get-token`).then((response) => {
+  console.log('response at zustand:', response);
+  useUserStore.setState({
+    accessToken: response?.token,
   });
- */
+});
+
+export const { getState: getStateFromUserStore } = useUserStore;

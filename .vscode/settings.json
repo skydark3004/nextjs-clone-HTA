@@ -15,6 +15,7 @@
     "tree.indentGuidesStroke": "#b7b7b7"
   },
   "files.autoSave": "off",
+  "explorer.compactFolders": false,
 
   "iconify.color": "#ddd",
   "iconify.customCollectionJsonPaths": ["./styles/t4font/t4font-collection.json"],

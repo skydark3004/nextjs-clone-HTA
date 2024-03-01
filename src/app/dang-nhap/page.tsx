@@ -10,8 +10,10 @@ import { ILoading, useLoadingStore, useUserStore } from '@/store';
 import Image from 'next/image';
 import { ToastError, ToastSucess } from '@/common/toast';
 import { useRouter } from 'next/navigation';
-import { getMyCompany, login } from '@/api-be/client';
-import { useUserContext } from '@/context';
+import { getMyCompany } from '@/api-be/client';
+import { login } from '@/api-be/client-to-nextjs';
+import { EnumModule, EnumRoleCode } from '@/core/enum';
+//import { useUserContext } from '@/context';
 
 export default function LoginPage() {
   // const { setDataContext } = useUserContext();
@@ -28,18 +30,19 @@ export default function LoginPage() {
 
   const { trigger: triggerGetMyCompany } = useSWRMutation(getMyCompany.key, getMyCompany.function, {
     onSuccess(data) {
+      console.log('res at trigger company');
       console.log(data);
+      if (data.package.modules.includes(EnumModule.ACCOUNT)) {
+        router.push('/tai-khoan');
+      }
     },
     onError(err: any) {
-      console.log(err);
       ToastError(err?.message);
     },
   });
 
   const { trigger, isMutating } = useSWRMutation(login.key, login.function, {
-    onSuccess(data) {
-      const res = data.data;
-      console.log(res);
+    onSuccess(res) {
       setLoading(false);
       ToastSucess('Đăng nhập thành công');
       setInforUser({
@@ -47,12 +50,17 @@ export default function LoginPage() {
         roleCode: res?.role?.code,
         accessToken: res?.accessToken,
       });
-      //triggerGetMyCompany();
+      if (res?.role?.code === EnumRoleCode.SUPPER_ADMIN) {
+        console.log('redirect sang super admin page');
+        //router.push('/');
+      } else {
+        triggerGetMyCompany({ token: res?.accessToken });
+      }
+
       //router.push('/');
     },
     onError(err: any) {
-      console.log(err);
-      ToastError(err.response?.data?.message || 'Đăng nhập thất bại');
+      ToastError(err?.message || 'Đăng nhập thất bại');
       setLoading(false);
     },
   });

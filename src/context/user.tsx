@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { getDataFromCookie } from '@/api-be/client';
+//import { getDataFromCookie } from '@/api-be/client';
 import useSWRMutation from 'swr/mutation';
 import { EnumRoleCode } from '@/core/enum';
 
@@ -29,7 +29,7 @@ export const useUserContext = () => useContext(UserGlobalContext);
 export const UserProvider = (props: IProps) => {
   const [user, setUser] = useState<IUserFromToken | null>(null);
 
-  const { trigger } = useSWRMutation(getDataFromCookie.key, getDataFromCookie.function, {
+  /*   const { trigger } = useSWRMutation(getDataFromCookie.key, getDataFromCookie.function, {
     onSuccess({ data }) {
       const payload = data?.data;
       if (payload) {
@@ -45,7 +45,7 @@ export const UserProvider = (props: IProps) => {
 
   useEffect(() => {
     trigger();
-  }, [trigger]);
+  }, [trigger]); */
 
   return (
     <>
