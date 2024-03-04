@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import { jwtVerify } from 'jose';
 import { APP_CONFIG } from './config/app.config';
 
 const PUBLIC_ROUTES: string[] = [];
@@ -10,13 +9,16 @@ const ROUTE_LOGIN = '/dang-nhap';
 const ROUTE_HOME = '/';
 
 export async function middleware(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', request.nextUrl.pathname);
+
   const currentRoute = request.nextUrl.pathname;
   console.log('ROUTE AT MIDDLEWARE::', currentRoute);
 
   // login page
   if (isLoginPage(currentRoute)) {
-    const isValid = await isValidToken();
-    if (isValid) return redirectToHomePage(request);
+    const token = getTokenByCookies();
+    if (token) return redirectToHomePage(request);
   }
 
   // public route
@@ -26,11 +28,15 @@ export async function middleware(request: NextRequest) {
 
   // private route
   if (isPrivateRoute(currentRoute)) {
-    const isValid = await isValidToken();
-    if (!isValid) return redirectToLoginPage(request);
+    const token = getTokenByCookies();
+    if (!token) return redirectToLoginPage(request);
   }
 
-  return NextResponse.next();
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
@@ -38,18 +44,6 @@ export const config = {
 };
 // /((?!api|_next/static|_next/image|favicon.ico).*)
 // /((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)
-
-async function isValidToken() {
-  try {
-    const token = getTokenByCookies();
-    if (!token) return false;
-
-    const verify = await jwtVerify(token, new TextEncoder().encode(APP_CONFIG.ENV.JWT_SECRET));
-    return verify.payload;
-  } catch (error) {
-    return false;
-  }
-}
 
 const isLoginPage = (route: string): boolean => route === ROUTE_LOGIN;
 

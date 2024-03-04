@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { getMyCompany } from '@/api-be/client';
 import { login } from '@/api-be/client-to-nextjs';
 import { EnumModule, EnumRoleCode } from '@/core/enum';
+import { Title } from '@/components/title';
 //import { useUserContext } from '@/context';
 
 export default function LoginPage() {
@@ -75,7 +76,7 @@ export default function LoginPage() {
 
   return (
     <>
-      {/* {isMutating && <Loading></Loading>} */}
+      <Title content='Đăng nhập' />
       <Row style={{ maxWidth: '100vw', height: '100vh' }}>
         <Col span={12}>
           <div className='center-screen'>

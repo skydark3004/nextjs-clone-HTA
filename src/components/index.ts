@@ -1,3 +1,3 @@
 export * from './loading';
-export * from './toast-message';
-export { Navbar } from './navbar/navbar';
+export * from './toast';
+export * from './navbar';
